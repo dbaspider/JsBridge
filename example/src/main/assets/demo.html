@@ -30,6 +30,10 @@
             />
         </p>
         <p>
+            <input type="button" id="enter12" value="拉起会议" onclick="testClick2();"
+            />
+        </p>
+        <p>
             <input type="button" id="enter2" value="显示html" onclick="testDiv();" />
         </p>
         <p>
@@ -66,6 +70,20 @@
                 , {'param': '中文测试'}
                 , function(responseData) {
                     document.getElementById("show").innerHTML = "send get responseData from java, data = " + responseData
+                }
+            );
+        }
+
+        function testClick2() {
+            //var str1 = document.getElementById("text1").value;
+            //var str2 = document.getElementById("text2").value;
+
+            //call native method
+            window.WebViewJavascriptBridge.callHandler(
+                'joinYmsMeeting'
+                , {'number': '123456'}
+                , function(responseData) {
+                    document.getElementById("show").innerHTML = "joinYmsMeeting, data = " + responseData
                 }
             );
         }

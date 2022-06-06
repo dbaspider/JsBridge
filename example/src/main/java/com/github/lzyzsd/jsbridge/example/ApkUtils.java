@@ -78,9 +78,9 @@ public class ApkUtils {
         intent.setData(builder.build());
         try {
             context.startActivity(intent);
+            return true;
         } catch (Exception ex) {
             Log.e(TAG, "joinYmsMeeting failed: " + ex.getMessage());
-            return true;
         }
         return false;
         //"ymeetingonpremise://yms.yealinkops.com/app/joinmeeting?number=88866656789&password=123456"

@@ -91,6 +91,21 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		});
 
+		webView.registerHandler("joinYmsMeeting", new BridgeHandler() {
+			@Override
+			public void handler(String data, CallBackFunction function) {
+				Log.i(TAG, "handler = joinYmsMeeting, data from web = " + data);
+				if (!ApkUtils.checkApkInstalled(MainActivity.this, "com.yealink.vc.mobile.yms")) {
+					log.info("apk not installed");
+					function.onCallBack("apk not installed");
+					return;
+				}
+				//ApkUtils.startApp(this, "com.yealink.vc.mobile", "com.yealink.main.StartActivity");
+				boolean ret = ApkUtils.joinYmsMeeting(MainActivity.this);
+				function.onCallBack("call yms ret = " + ret);
+			}
+		});
+
         User user = new User();
         Location location = new Location();
         location.address = "SDU";
