@@ -17,13 +17,18 @@ import com.github.lzyzsd.jsbridge.CallBackFunction;
 import com.github.lzyzsd.jsbridge.DefaultHandler;
 import com.google.gson.Gson;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class MainActivity extends Activity implements OnClickListener {
 
-	private final String TAG = "MainActivity";
+	private static final String TAG = "MainActivity";
+	private static final Logger log = LoggerFactory.getLogger(MainActivity.class);
 
 	BridgeWebView webView;
 
-	Button button;
+	Button button1;
+	Button button2;
 
 	int RESULT_CODE = 0;
 
@@ -44,11 +49,15 @@ public class MainActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-        webView = (BridgeWebView) findViewById(R.id.webView);
+		log.info("hello world");
 
-		button = (Button) findViewById(R.id.button);
+		webView = (BridgeWebView) findViewById(R.id.webView);
 
-		button.setOnClickListener(this);
+		button1 = (Button) findViewById(R.id.button1);
+		button2 = (Button) findViewById(R.id.button2);
+
+		button1.setOnClickListener(this);
+		button2.setOnClickListener(this);
 
 		webView.setDefaultHandler(new DefaultHandler());
 
@@ -119,7 +128,10 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		if (button.equals(v)) {
+		log.info("onClick {} / {}", 1, 2);
+
+		if (button1.equals(v)) {
+			log.info("button1 onClick");
             webView.callHandler("functionInJs", "data from Java", new CallBackFunction() {
 
 				@Override
@@ -131,6 +143,15 @@ public class MainActivity extends Activity implements OnClickListener {
 			});
 		}
 
+		if (button2.equals(v)) {
+			log.info("button2 onClick");
+			if (!ApkUtils.checkApkInstalled(this, "com.yealink.vc.mobile.yms")) {
+				log.info("apk not installed");
+				return;
+			}
+			//ApkUtils.startApp(this, "com.yealink.vc.mobile", "com.yealink.main.StartActivity");
+			ApkUtils.joinYmsMeeting(this);
+		}
 	}
 
 }
