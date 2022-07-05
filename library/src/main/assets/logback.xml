@@ -1,14 +1,65 @@
 <configuration>
-    <appender name="logcat" class="ch.qos.logback.classic.android.LogcatAppender">
+    <!--声明一个属性,用来指定log文件存放的路径-->
+    <property name="LOG_DIR" value="/sdcard/securitypatrolpad/log" />
+    <!--声明一个时间戳-->
+    <timestamp datePattern="yyyyMMdd" key="today" />
+
+<!--    <appender name="logcat-000" class="ch.qos.logback.classic.android.LogcatAppender">-->
+<!--        <tagEncoder>-->
+<!--            <pattern>%logger{12}</pattern>-->
+<!--        </tagEncoder>-->
+<!--        <encoder>-->
+<!--            <pattern>[%-20thread] %msg</pattern>-->
+<!--        </encoder>-->
+<!--    </appender>-->
+
+    <!-- 控制台Appender -->
+    <appender name="LOGCAT" class="ch.qos.logback.classic.android.LogcatAppender">
         <tagEncoder>
             <pattern>%logger{12}</pattern>
         </tagEncoder>
         <encoder>
-            <pattern>[%-20thread] %msg</pattern>
+            <!--01-27 10:30:17.721 32504-571/com.xx.xx D/com.xx.xxx.log.timber.FileLoggingTree:
+             1029784 [RxCachedThreadScheduler-4] [FileLoggingTree.java:log:27]   -->
+            <!--            <pattern>%-5relative [%thread][%file:%M:%line] - %msg%n</pattern>-->
+            <pattern>[%thread] - %msg%n</pattern>
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
         </encoder>
     </appender>
 
+    <!-- RollingFileAppender -->
+    <appender name="ROLL_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/app.log</file>
+        <append>true</append>
+        <encoder>
+            <!--2021-01-27 10:44:04,675 2530  [RxCachedThreadScheduler-2] DEBUG c.y.c.log.timber.FileLoggingTree [FileLoggingTree.java:log:27]-->
+            <!--            <pattern>%date %-5relative [%thread] %-5level %logger{36} [%file:%M:%line] - %msg%n </pattern>-->
+            <pattern>%date %logger{23} [%thread] %-5level - %msg%n</pattern>
+        </encoder>
+
+        <!--时间控制-->
+<!--        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+<!--            <fileNamePattern>${LOG_DIR}/app.%d{yyyy-MM-dd}.log</fileNamePattern>-->
+<!--            &lt;!&ndash;最大保存7天的日志&ndash;&gt;-->
+<!--            <maxHistory>7</maxHistory>-->
+<!--        </rollingPolicy>-->
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/app-%d{yyyy-MM-dd-HHmm}.%i.log</fileNamePattern>
+            <maxFileSize>10KB</maxFileSize>
+            <maxHistory>10</maxHistory>
+            <totalSizeCap>120KB</totalSizeCap>
+        </rollingPolicy>
+
+        <!--文件大于10mb,切换文件 大小控制-->
+<!--        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">-->
+<!--            <maxFileSize>10KB</maxFileSize>-->
+<!--            <maxHistory>30</maxHistory>-->
+<!--        </triggeringPolicy>-->
+    </appender>
+
     <root level="DEBUG">
-        <appender-ref ref="logcat" />
+        <appender-ref ref="LOGCAT" />
+        <appender-ref ref="ROLL_FILE" />
     </root>
 </configuration>

@@ -8,7 +8,9 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
+//import android.util.Log;
+
+import com.github.lzyzsd.jsbridge.example.logger.AppLogger;
 
 import java.util.List;
 
@@ -56,7 +58,7 @@ public class ApkUtils {
             context.startActivity(intent);
             return true;
         } catch (Exception ex) {
-            Log.e(TAG, "startApp failed: " + ex.getMessage());
+            AppLogger.e(TAG, "startApp failed: " + ex.getMessage());
         }
         return false;
     }
@@ -80,7 +82,7 @@ public class ApkUtils {
             context.startActivity(intent);
             return true;
         } catch (Exception ex) {
-            Log.e(TAG, "joinYmsMeeting failed: " + ex.getMessage());
+            AppLogger.e(TAG, "joinYmsMeeting failed: " + ex.getMessage());
         }
         return false;
         //"ymeetingonpremise://yms.yealinkops.com/app/joinmeeting?number=88866656789&password=123456"
